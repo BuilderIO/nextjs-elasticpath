@@ -1,18 +1,9 @@
 {
   "parentOrganization": "31690b9fbad346358ed64d2cc349bd49",
   "hasIntegrated": "local",
-  "loadPlugins": ["@builder.io/plugin-shopify@dev"],
+  "loadPlugins": ["@builder.io/plugin-elasticpath"],
   "settings": {
     "optimizeContentVisibility": true,
-    "plugins": {
-      "@builder.io/plugin-shopify": {
-        "syncPreviewUrlWithTargeting": true,
-        "apiPassword": "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",
-        "storefrontAccessToken": "dd0057d1e48d2d61ca8ec27b07d3c5e6",
-        "storeDomain": "builder-io-demo.myshopify.com/",
-        "apiKey": "14f064d7f94eeaadf93bd8690fca1207"
-      }
-    },
     "componentsOnlyMode": false,
     "showSitePreviewTab": false,
     "editorShowShopifyBlocks": false,
@@ -21,14 +12,8 @@
   },
   "@version": 5,
   "customTargetingAttributes": {
-    "collectionHandle": {
-      "type": "ShopifyCollectionHandle"
-    },
-    "itemInCart": {
-      "type": "ShopifyProductHandle"
-    },
     "productHandle": {
-      "type": "ShopifyProductHandle"
+      "type": "ElasticpathProductHandle"
     }
   },
   "siteUrl": "http://localhost:3000",

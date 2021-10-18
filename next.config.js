@@ -21,12 +21,20 @@ module.exports = bundleAnalyzer({
       },
     ]
   },
+  webpack: (config, { isServer }) => {
+      // Fixes npm packages that depend on 'fs' module
+      if (!isServer) {
+          config.node = {
+              "fs": "empty",
+          };
+      }
+
+      return config;
+  },
   env: {
     // expose env to the browser
-    SHOPIFY_STOREFRONT_API_TOKEN: process.env.SHOPIFY_STOREFRONT_API_TOKEN,
-    SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
+    ELASTICPATH_CLIENT_ID: process.env.ELASTICPATH_CLIENT_ID,
     BUILDER_PUBLIC_KEY: process.env.BUILDER_PUBLIC_KEY,
-    IS_DEMO: process.env.IS_DEMO,
   },
   i18n: {
     // These are all the locales you want to support in

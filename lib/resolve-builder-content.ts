@@ -2,10 +2,9 @@ import { builder, Builder } from '@builder.io/react'
 import { getAsyncProps } from '@builder.io/utils'
 import builderConfig from '@config/builder'
 import {
-  getCollection,
   getProduct,
   searchProducts,
-} from './shopify/storefront-data-hooks/src/api/operations-builder'
+} from './elasticpath/storefront-data-hooks/src/api/operations-builder'
 builder.init(builderConfig.apiKey)
 Builder.isStatic = true
 
@@ -42,17 +41,6 @@ export async function resolveBuilderContent(
           products,
         }
       },
-      async CollectionBox(props) {
-        let collection = props.collection
-        if (collection && typeof collection === 'string') {
-          collection = await getCollection(builderConfig, {
-            handle: collection,
-          })
-        }
-        return {
-          collection,
-        }
-      },
       async ProductBox(props) {
         let product = props.product
         if (product && typeof product === 'string') {
@@ -62,17 +50,6 @@ export async function resolveBuilderContent(
         }
         return {
           product,
-        }
-      },
-
-      async ProductCollectionGrid({ collection }) {
-        if (collection && typeof collection === 'string') {
-          const { products } = await getCollection(builderConfig, {
-            handle: collection,
-          })
-          return {
-            products,
-          }
         }
       },
     })

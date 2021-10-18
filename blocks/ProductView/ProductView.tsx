@@ -6,19 +6,13 @@ import { Grid, Button } from '@theme-ui/components'
 import OptionPicker from '@components/common/OptionPicker'
 import { NextSeo } from 'next-seo'
 import { useUI } from '@components/ui/context'
-import { useAddItemToCart } from '@lib/shopify/storefront-data-hooks'
-import {
-  prepareVariantsWithOptions,
-  prepareVariantsImages,
-  getPrice,
-} from '@lib/shopify/storefront-data-hooks/src/utils/product'
 import { ImageCarousel, LoadingDots } from '@components/ui'
 import ProductLoader from './ProductLoader'
 
 interface Props {
   className?: string
   children?: any
-  product: ShopifyBuy.Product
+  product: any
   renderSeo?: boolean
   description?: string
   title?: string
@@ -31,59 +25,19 @@ const ProductBox: React.FC<Props> = ({
   title = product.title,
 }) => {
   const [loading, setLoading] = useState(false)
-  const addItem = useAddItemToCart()
-  const colors: string[] | undefined = product?.options
-    ?.find((option) => option?.name?.toLowerCase() === 'color')
-    ?.values?.map((op) => op.value as string)
-
-  const sizes: string[] | undefined = product?.options
-    ?.find((option) => option?.name?.toLowerCase() === 'size')
-    ?.values?.map((op) => op.value as string)
-
-  const variants = useMemo(
-    () => prepareVariantsWithOptions(product?.variants),
-    [product?.variants]
-  )
-  const images = useMemo(() => prepareVariantsImages(variants, 'color'), [
-    variants,
-  ])
-
   const { openSidebar } = useUI()
 
-  const [variant, setVariant] = useState(variants[0] || {})
-  const [color, setColor] = useState(variant.color)
-  const [size, setSize] = useState(variant.size)
-
-  useEffect(() => {
-    const newVariant = variants.find((variant) => {
-      return (
-        (variant.size === size || !size) && (variant.color === color || !color)
-      )
-    })
-
-    if (variant.id !== newVariant?.id) {
-      setVariant(newVariant)
-    }
-  }, [size, color, variants, variant.id])
+  const [variant, setVariant] = useState({})
 
   const addToCart = async () => {
     setLoading(true)
     try {
-      await addItem(variant.id, 1)
       openSidebar()
       setLoading(false)
     } catch (err) {
       setLoading(false)
     }
   }
-  const allImages = images
-    .map(({ src }) => ({ src: src.src }))
-    .concat(
-      product.images &&
-        product.images.filter(
-          ({ src }) => !images.find((image) => image.src.src === src)
-        )
-    )
 
   return (
     <React.Fragment>
@@ -95,14 +49,14 @@ const ProductBox: React.FC<Props> = ({
             type: 'website',
             title: title,
             description: description,
-            images: [
-              {
-                url: product.images?.[0]?.src!,
-                width: 800,
-                height: 600,
-                alt: title,
-              },
-            ],
+            // images: [
+            //   {
+            //     url: product.images?.[0]?.src!,
+            //     width: 800,
+            //     height: 600,
+            //     alt: title,
+            //   },
+            // ],
           }}
         />
       )}
@@ -121,12 +75,7 @@ const ProductBox: React.FC<Props> = ({
               width={1050}
               height={1050}
               priority
-              onThumbnailClick={(index) => {
-                if (images[index]?.color) {
-                  setColor(images[index].color)
-                }
-              }}
-              images={allImages?.length > 0 ? allImages: [{
+              images={product.images || [{
                   src: `https://via.placeholder.com/1050x1050`,
                 }]}
             ></ImageCarousel>
@@ -136,30 +85,12 @@ const ProductBox: React.FC<Props> = ({
           <span sx={{ mt: 0, mb: 2 }}>
             <Themed.h1>{title}</Themed.h1>
             <Themed.h4 aria-label="price" sx={{ mt: 0, mb: 2 }}>
-              {getPrice(variant.priceV2.amount, variant.priceV2.currencyCode)}
+              {product.meta.display_price.with_tax.formatted}
             </Themed.h4>
           </span>
           <div dangerouslySetInnerHTML={{ __html: description! }} />
           <div>
             <Grid padding={2} columns={2}>
-              {colors?.length && (
-                <OptionPicker
-                  key="Color"
-                  name="Color"
-                  options={colors}
-                  selected={color}
-                  onChange={(event) => setColor(event.target.value)}
-                />
-              )}
-              {sizes?.length && (
-                <OptionPicker
-                  key="Size"
-                  name="Size"
-                  options={sizes}
-                  selected={size}
-                  onChange={(event) => setSize(event.target.value)}
-                />
-              )}
             </Grid>
           </div>
           <Button
@@ -177,7 +108,7 @@ const ProductBox: React.FC<Props> = ({
 }
 
 const ProductView: React.FC<{
-  product: string | ShopifyBuy.Product
+  product: string | any
   renderSeo?: boolean
   description?: string
   title?: string

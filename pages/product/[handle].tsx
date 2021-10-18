@@ -12,7 +12,7 @@ import builderConfig from '@config/builder'
 import {
   getAllProductPaths,
   getProduct,
-} from '@lib/shopify/storefront-data-hooks/src/api/operations-builder'
+} from '@lib/elasticpath/storefront-data-hooks/src/api/operations-builder'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import { useThemeUI } from 'theme-ui'

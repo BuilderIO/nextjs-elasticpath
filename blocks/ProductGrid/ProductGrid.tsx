@@ -8,18 +8,16 @@ import { ProductCardProps } from '@components/common/ProductCard'
 import { ProductCardDemo, ProductCard } from '@components/common'
 
 import {
-  getCollection,
   getProduct,
-} from '@lib/shopify/storefront-data-hooks/src/api/operations-builder'
+} from '@lib/elasticpath/storefront-data-hooks/src/api/operations-builder'
 import builderConfig from '@config/builder'
 interface HighlightedCardProps extends Omit<ProductCardProps, 'product'> {
   index: number
 }
 
 export interface ProductGridProps {
-  products?: ShopifyBuy.Product[]
+  products?: any[]
   productsList?: Array<{ product: string }>
-  collection?: string | any // ShopifyBuy.Collection
   offset: number
   limit: number
   cardProps: Omit<ProductCardProps, 'product'>
@@ -28,7 +26,6 @@ export interface ProductGridProps {
 
 export const ProductGrid: FC<ProductGridProps> = ({
   products: initialProducts,
-  collection,
   productsList,
   offset = 0,
   limit = 10,
@@ -54,20 +51,6 @@ export const ProductGrid: FC<ProductGridProps> = ({
       getProducts()
     }
   }, [productsList, initialProducts])
-
-  useEffect(() => {
-    const fetchCollection = async () => {
-      setLoading(true)
-      const result = await getCollection(builderConfig, {
-        handle: collection,
-      })
-      setProducts(result.products)
-      setLoading(false)
-    }
-    if (typeof collection === 'string' && !initialProducts) {
-      fetchCollection()
-    }
-  }, [collection])
 
   if (loading) {
     return <LoadingDots />

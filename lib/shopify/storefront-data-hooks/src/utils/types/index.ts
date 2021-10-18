@@ -1,1 +1,0 @@
-export { isCart } from './isCart'

@@ -8,9 +8,6 @@ import { Head, Navbar } from '@components/common'
 import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
 import { Button } from 'theme-ui'
 import { Sidebar } from '@components/ui'
-import { CartSidebarView } from '@components/cart'
-import { CommerceProvider } from '@lib/shopify/storefront-data-hooks'
-import shopifyConfig from '@config/shopify'
 import { builder, BuilderContent, Builder } from '@builder.io/react'
 import themesMap from '@config/theme'
 import '@builder.io/widgets'
@@ -26,7 +23,6 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
   const builderTheme = pageProps.theme
   const isLive = !Builder.isEditing && !Builder.isPreviewing
   return (
-    <CommerceProvider {...shopifyConfig}>
       <BuilderContent
         isStatic
         {...(isLive && { content: builderTheme })}
@@ -52,7 +48,6 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
           )
         }}
       </BuilderContent>
-    </CommerceProvider>
   )
 }
 
@@ -98,7 +93,7 @@ const InnerLayout: React.FC<{
         }
         onClose={closeSidebar}
       >
-        <CartSidebarView />
+        CART
       </Sidebar>
       <NoSSR>
         <FeatureBar

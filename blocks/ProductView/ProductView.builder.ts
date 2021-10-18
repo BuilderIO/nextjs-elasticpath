@@ -1,13 +1,8 @@
-import { Builder, builder } from '@builder.io/react'
 import { restrictedRegister } from 'blocks/utils'
 import dynamic from 'next/dynamic'
 
-const isDemo = Boolean(process.env.IS_DEMO)
 const LazyProductView = dynamic(
-  () =>
-    isDemo
-      ? import(`blocks/ProductView/ProductViewDemo`)
-      : import(`blocks/ProductView/ProductView`),
+  () => import(`blocks/ProductView/ProductView`),
   { ssr: true }
 )
 
@@ -36,7 +31,7 @@ restrictedRegister(
     inputs: [
       {
         name: 'product',
-        type: `${isDemo ? 'ShopifyStore' : 'Shopify'}ProductHandle`,
+        type: `ElasticpathProductHandle`,
       },
       {
         name: 'description',

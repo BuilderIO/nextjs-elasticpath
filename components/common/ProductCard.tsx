@@ -3,12 +3,11 @@
 import { Themed, jsx } from 'theme-ui'
 import { Card, Text } from '@theme-ui/components'
 import { Link, ImageCarousel } from '@components/ui'
-import { getPrice } from '@lib/shopify/storefront-data-hooks/src/utils/product'
 import { useState } from 'react'
 
 export interface ProductCardProps {
   className?: string
-  product: ShopifyBuy.Product
+  product: any
   imgWidth: number | string
   imgHeight: number | string
   imgLayout?: 'fixed' | 'intrinsic' | 'responsive' | undefined
@@ -26,12 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   imgSizes,
   imgLayout = 'responsive',
 }) => {
-  const handle = (product as any).handle
-  const productVariant: any = product.variants[0]
-  const price = getPrice(
-    productVariant.priceV2.amount,
-    productVariant.priceV2.currencyCode
-  )
+  const handle = (product as any).slug
+  const price = product.meta.display_price.with_tax.formatted
 
   return (
     <Card
@@ -54,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             sizes={imgSizes}
             alt={product.title}
             images={
-              product.images.length ? product.images : [{
+              product.images?.length ? product.images : [{
                 src: `https://via.placeholder.com/${imgWidth}x${imgHeight}`,
               }]
             }
