@@ -1,7 +1,7 @@
 
-# Next.js + Elasticpath + Builder.io starter kit
+# Next.js + Elasticpath + Builder.io example
 
-This is a minimal starter to get started with elastic path and builder.io, it renders product pages and landing pages and have theming support built-in.
+This is a minimal example to get started with elastic path and builder.io, it renders product pages and landing pages and have theming support built-in.
 
 ## Table of contents
 
@@ -29,10 +29,6 @@ This guide will assume that you have the following software installed:
 You should already have a [Elasticpath](https://www.elasticpath.com/) account and store created before starting as well. 
 
 **Introduction**
-
-This starter kit is everything you need to get your own self hosted
-Next.js project powered by Builder.io for content and Elasticpath as an
-e-commerce back office.
 
 After following this guide you will have
 
